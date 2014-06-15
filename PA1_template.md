@@ -167,15 +167,15 @@ weekdays <- subset(activity2, week == "weekday")
 weekends <- subset(activity2, week == "weekend")
 v <-aggregate(steps ~ interval, weekdays, mean)
 w <-aggregate(steps ~ interval, weekends, mean)
-# Plot the results
-layout(rbind(1,2))
-par(mar=c(0,4,4,2))
-plot(v[,1],v[,2], type="l", xaxt="n",  xlab="",ylab="")
-title("Weekdays", line = -1)
-par(mar=c(4,4,0,2))
-plot(w[,1],w[,2], type="l", xaxt="n",  xlab="",ylab="")
-title("Weekends", line = -1)
-axis(1, at = seq(0000, 2400, by = 100))
+
+# Panel Plot with lattice
+library(lattice)
+b <- cbind(v, "weekday")
+colnames(b)[3] <- "week"
+c <- cbind(w, "weekend")
+colnames(c)[3] <- "week"
+d <- rbind(b,c)
+xyplot(steps ~ interval | week, data = d, type="l", layout = c(1,2), ylab = "Number of steps")
 ```
 
 ![plot of chunk weekday versus weekend](figure/weekday versus weekend.png) 
